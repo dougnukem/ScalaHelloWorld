@@ -3,5 +3,9 @@
 	<classpathentry kind="src" path="src/main/scala"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?ivyXmlPath=ivy.xml&amp;confs=*"/>
+	<classpathentry kind="lib" path="lib/jansi-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jline-2.9.1.jar"/>
+	<classpathentry kind="lib" path="lib/scala-compiler-2.9.1.jar"/>
+	<classpathentry kind="lib" path="lib/scala-library-2.9.1.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
