@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="hello-scala" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <property name="ivy.install.version" value="2.2.0"/>
+    <property name="ivy.jar.dir" value="${basedir}/lib"/>
+    <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
+    <property name="lib.dir" location="lib"/>
+	<property name="build.dir" value="build" />
+    <property name="src.dir" value="src/main" />
+	<property name="scala.src.dir" value="${src.dir}/scala" />
+
+
+    <target name="clean">
+        <delete dir="build" includeemptydirs="true" />
+    </target>
+
+    <target name="build" depends="init, compile" />
+
+	<target name="init" depends="install-ivy, ivy-resolve">
+		<path id="build.classpath">
+			<fileset dir="lib">
+				<include name="**/*.jar"/>
+			</fileset>
+			
+			<pathelement location="${build.dir}"   />
+		</path>
+    
+		<taskdef resource="scala/tools/ant/antlib.xml" classpathref="build.classpath"/>
+	</target>
+	
+	<target name="compile" depends="init">
+	    <mkdir dir="${build.dir}"   />
+		<scalac srcdir="${scala.src.dir}"
+            destdir="${build.dir}"
+            classpathref="build.classpath">
+			<include name="**/*.scala"   />
+		</scalac>
+	</target>
+
+
+    <target name="download-ivy" unless="skip.download">
+        <mkdir dir="${ivy.jar.dir}" />
+        <!--
+            download Ivy from web site so that it can be used even without any special installation
+        -->
+        <echo message="installing ivy..." />
+        <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
+    </target>
+    
+    <target name="install-ivy" depends="check-for-ivy, download-ivy" description="--> install ivy">
+        <path id="ivy.lib.path">
+            <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+        </path>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    </target>
+    
+    <target name="check-for-ivy">
+        <available file="${ivy.jar.file}" property="skip.download"/>
+    </target>
+    
+    <target name="clean-ivy" description="--> clean the ivy installation">
+        <delete dir="${ivy.jar.dir}"/>
+    </target>
+    
+    <target name="clean-cache" depends="install-ivy" description="--> clean the ivy cache">
+        <ivy:cleancache/>
+    </target>
+    
+    <target name="ivy-resolve" depends="install-ivy" description="--> retrieve dependencies with ivy">
+        <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision].[ext]" type="jar" sync="true"/>
+    </target>
+
+</project>

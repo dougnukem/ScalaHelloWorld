@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ivy-module version="2.0">
+	<info organisation="net.ddaniels.scala" module="helloworld"/>
+	<dependencies>
+		<dependency org="org.scala-lang" name="scala-library" rev="2.9.1" conf="*->*,!sources,!javadoc"/>
+		<dependency org="org.scala-lang" name="scala-compiler" rev="2.9.1" conf="*->*,!sources,!javadoc"/>
+	</dependencies>
+</ivy-module>
